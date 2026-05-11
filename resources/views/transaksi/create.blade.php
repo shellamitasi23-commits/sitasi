@@ -80,7 +80,7 @@
             <div class="mb-5">
                 <label class="block text-sm font-semibold text-gray-700 mb-2" for="jumlah">Jumlah (Rp)</label>
                 <input type="number" name="jumlah" id="jumlah" class="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm text-gray-900 outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all bg-white"
-                       value="{{ old('jumlah') }}" min="1000" step="500"
+                       value="{{ old('jumlah') }}" min="500" step="500"
                        placeholder="Contoh: 50000" required>
                 @error('jumlah')
                     <div class="text-xs text-red-600 mt-1.5">{{ $message }}</div>

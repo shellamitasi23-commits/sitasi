@@ -2,84 +2,68 @@
 @section('title', 'Detail Transaksi')
 
 @section('content')
-<style>
-.page-title{font-size:20px;font-weight:600;color:#1e293b}
-.page-sub{font-size:13px;color:#64748b;margin-top:2px}
-.btn-secondary{display:inline-flex;align-items:center;gap:6px;background:#fff;color:#64748b;padding:10px 20px;border-radius:10px;font-size:13px;font-weight:500;border:1px solid #e2e8f0;text-decoration:none}
-.card{background:#fff;border-radius:14px;border:1px solid #e2e8f0;overflow:hidden;max-width:600px;}
-.card-header{padding:16px 20px;border-bottom:1px solid #f1f5f9;background:#fafbff}
-.row-info{display:flex;padding:13px 20px;border-bottom:1px solid #f8fafc;font-size:13px;}
-.row-info:last-child{border-bottom:none}
-.row-label{color:#94a3b8;width:160px;flex-shrink:0;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;padding-top:1px}
-.row-value{color:#1e293b;font-weight:500}
-.badge-tabung{background:#d1fae5;color:#065f46;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;border:1px solid #a7f3d0}
-.badge-tarik{background:#ffe4e6;color:#9f1239;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;border:1px solid #fecdd3}
-</style>
 
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+<div class="flex justify-between items-center mb-5">
     <div>
-        <div class="page-title">Detail Transaksi</div>
-        <div class="page-sub">#{{ str_pad($transaksi->id, 6, '0', STR_PAD_LEFT) }}</div>
+        <div class="text-xl font-semibold text-slate-800">Detail Transaksi</div>
+        <div class="text-sm text-slate-500 mt-0.5">#{{ str_pad($transaksi->id, 6, '0', STR_PAD_LEFT) }}</div>
     </div>
-    <a href="{{ route('transaksi.index') }}" class="btn-secondary">
-        <i class="ti ti-arrow-left" aria-hidden="true"></i> Kembali
-    </a>
 </div>
 
-<div class="card">
-    <div class="card-header">
-        <div style="font-size:14px;font-weight:600;color:#1e293b;">Informasi Transaksi</div>
+<div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+    <div class="px-5 py-4 border-b border-slate-100 bg-slate-50/50">
+        <div class="text-sm font-semibold text-slate-800">Informasi Transaksi</div>
     </div>
 
-    <div class="row-info">
-        <div class="row-label">ID Transaksi</div>
-        <div class="row-value">#{{ str_pad($transaksi->id, 6, '0', STR_PAD_LEFT) }}</div>
+    <div class="flex px-5 py-3 border-b border-slate-50 text-sm">
+        <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider w-40 shrink-0 pt-0.5">ID Transaksi</div>
+        <div class="text-slate-800 font-medium">#{{ str_pad($transaksi->id, 6, '0', STR_PAD_LEFT) }}</div>
     </div>
-    <div class="row-info">
-        <div class="row-label">Tanggal</div>
-        <div class="row-value">{{ $transaksi->created_at->format('d F Y, H:i') }} WIB</div>
+    <div class="flex px-5 py-3 border-b border-slate-50 text-sm">
+        <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider w-40 shrink-0 pt-0.5">Tanggal</div>
+        <div class="text-slate-800 font-medium">{{ $transaksi->created_at->translatedFormat('d F Y, H:i') }} WIB</div>
     </div>
-    <div class="row-info">
-        <div class="row-label">Siswa</div>
-        <div class="row-value">
+    <div class="flex px-5 py-3 border-b border-slate-50 text-sm">
+        <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider w-40 shrink-0 pt-0.5">Siswa</div>
+        <div class="text-slate-800 font-medium">
             {{ $transaksi->siswa->nama }}
         </div>
     </div>
-    <div class="row-info">
-        <div class="row-label">Kelas</div>
-        <div class="row-value">{{ $transaksi->siswa->kelas->nama_kelas }}</div>
+    <div class="flex px-5 py-3 border-b border-slate-50 text-sm">
+        <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider w-40 shrink-0 pt-0.5">Kelas</div>
+        <div class="text-slate-800 font-medium">{{ $transaksi->siswa->kelas->nama_kelas }}</div>
     </div>
-    <div class="row-info">
-        <div class="row-label">Jenis</div>
-        <div class="row-value">
+    <div class="flex px-5 py-3 border-b border-slate-50 text-sm">
+        <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider w-40 shrink-0 pt-0.5">Jenis</div>
+        <div>
             @if($transaksi->jenis === 'tabung')
-                <span class="badge-tabung">↑ Setor Tabungan</span>
+                <span class="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-xs font-semibold border border-emerald-200">↑ Setor Tabungan</span>
             @else
-                <span class="badge-tarik">↓ Tarik Tabungan</span>
+                <span class="bg-rose-100 text-rose-800 px-3 py-1 rounded-full text-xs font-semibold border border-rose-200">↓ Tarik Tabungan</span>
             @endif
         </div>
     </div>
-    <div class="row-info">
-        <div class="row-label">Jumlah</div>
-        <div class="row-value" style="font-size:16px;font-weight:700;{{ $transaksi->jenis === 'tabung' ? 'color:#065f46' : 'color:#9f1239' }}">
+    <div class="flex px-5 py-3 border-b border-slate-50 text-sm items-center">
+        <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider w-40 shrink-0">Jumlah</div>
+        <div class="text-base font-bold {{ $transaksi->jenis === 'tabung' ? 'text-emerald-800' : 'text-rose-800' }}">
             {{ $transaksi->jenis === 'tabung' ? '+' : '-' }}Rp {{ number_format($transaksi->jumlah, 0, ',', '.') }}
         </div>
     </div>
-    <div class="row-info">
-        <div class="row-label">Saldo Sebelum</div>
-        <div class="row-value">Rp {{ number_format($transaksi->saldo_sebelum, 0, ',', '.') }}</div>
+    <div class="flex px-5 py-3 border-b border-slate-50 text-sm">
+        <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider w-40 shrink-0 pt-0.5">Saldo Sebelum</div>
+        <div class="text-slate-800 font-medium">Rp {{ number_format($transaksi->saldo_sebelum, 0, ',', '.') }}</div>
     </div>
-    <div class="row-info">
-        <div class="row-label">Saldo Sesudah</div>
-        <div class="row-value" style="font-weight:700;">Rp {{ number_format($transaksi->saldo_sesudah, 0, ',', '.') }}</div>
+    <div class="flex px-5 py-3 border-b border-slate-50 text-sm">
+        <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider w-40 shrink-0 pt-0.5">Saldo Sesudah</div>
+        <div class="text-slate-800 font-bold">Rp {{ number_format($transaksi->saldo_sesudah, 0, ',', '.') }}</div>
     </div>
-    <div class="row-info">
-        <div class="row-label">Dicatat Oleh</div>
-        <div class="row-value">{{ $transaksi->user->name }}</div>
+    <div class="flex px-5 py-3 border-b border-slate-50 text-sm">
+        <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider w-40 shrink-0 pt-0.5">Dicatat Oleh</div>
+        <div class="text-slate-800 font-medium">{{ $transaksi->user->name }}</div>
     </div>
-    <div class="row-info">
-        <div class="row-label">Keterangan</div>
-        <div class="row-value" style="color:{{ $transaksi->keterangan ? '#1e293b' : '#94a3b8' }}">
+    <div class="flex px-5 py-3 text-sm">
+        <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider w-40 shrink-0 pt-0.5">Keterangan</div>
+        <div class="{{ $transaksi->keterangan ? 'text-slate-800 font-medium' : 'text-slate-400' }}">
             {{ $transaksi->keterangan ?? '—' }}
         </div>
     </div>

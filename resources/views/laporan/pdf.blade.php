@@ -5,112 +5,135 @@
     <title>Laporan Tabungan Siswa</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'DejaVu Sans', sans-serif; font-size: 11px; color: #000; background: #fff; line-height: 1.4; }
-        .container { width: 100%; padding: 24px; }
-
-        .header { padding-bottom: 10px; margin-bottom: 16px; border-bottom: 1px solid #000; }
-        .header-title { font-size: 16px; font-weight: 700; }
-        .header-sub { font-size: 12px; margin-top: 4px; }
-        .header-meta { font-size: 10px; margin-top: 6px; color: #333; }
-
-        .stat-row { display: flex; gap: 8px; margin: 16px 0; }
-        .stat-box { flex: 1; border: 1px solid #000; padding: 8px 10px; }
-        .stat-label { font-size: 9px; font-weight: 700; text-transform: uppercase; }
-        .stat-value { font-size: 12px; margin-top: 4px; }
-
-        table { width: 100%; border-collapse: collapse; margin-top: 12px; }
-        th, td { border: 1px solid #000; padding: 8px 10px; text-align: left; font-size: 11px; }
-        thead { background: #f3f3f3; }
-        tfoot td { font-weight: 700; }
-
-        .footer { margin-top: 16px; padding-top: 10px; border-top: 1px solid #000; font-size: 10px; color: #333; display: flex; justify-content: space-between; }
+        body { font-family: 'Helvetica', 'Arial', sans-serif; font-size: 10pt; color: #000; background: #fff; line-height: 1.4; padding: 30px; }
+        
+        .kop-surat { text-align: center; border-bottom: 2px solid #000; padding-bottom: 15px; margin-bottom: 20px; }
+        .instansi { font-size: 18pt; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+        .alamat { font-size: 10pt; margin-top: 4px; color: #333; }
+        .kontak { font-size: 10pt; color: #333; }
+        
+        .judul-laporan { text-align: center; font-size: 14pt; font-weight: bold; text-transform: uppercase; margin-bottom: 20px; text-decoration: underline; }
+        
+        .header-table { width: 100%; margin-bottom: 20px; }
+        .header-table td { vertical-align: top; }
+        
+        .meta-info { width: 100%; }
+        .meta-info td { font-size: 10pt; padding: 3px 0; }
+        .meta-info .label { width: 120px; font-weight: bold; }
+        .meta-info .colon { width: 15px; }
+        
+        .data-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        .data-table th, .data-table td { border: 1px solid #000; padding: 8px; font-size: 9pt; }
+        .data-table th { background-color: #f3f3f3; text-align: left; text-transform: uppercase; font-size: 8pt; }
+        .data-table tfoot td { font-weight: bold; background-color: #fafafa; }
+        
+        .text-right { text-align: right; }
+        .text-center { text-align: center; }
+        
+        .ttd-area { width: 100%; margin-top: 40px; page-break-inside: avoid; }
+        .ttd-box { width: 250px; float: right; text-align: center; }
+        .ttd-name { margin-top: 60px; font-weight: bold; text-decoration: underline; }
+        .clear { clear: both; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <div class="header-title">Laporan Tabungan Siswa TK</div>
-        <div class="header-sub">Sistem Informasi Tabungan Siswa</div>
-        <div class="header-meta">Dicetak: {{ now()->format('d F Y, H:i') }} WIB</div>
+    <div class="kop-surat">
+        <div class="instansi">TK HIDMUT</div>
+        <div class="alamat">Jl. Greged No. 123, Kab. Cirebon, Jawa Barat 45151</div>
     </div>
 
-    {{-- Ringkasan --}}
-    <table style="margin-bottom:16px;">
+    <div class="judul-laporan">Laporan Tabungan Siswa</div>
+
+    <table class="header-table">
         <tr>
-            <td style="border:none;padding:0;width:33%;">
-                <div class="stat-box" style="margin-right:6px;">
-                    <div class="stat-label">Total Transaksi</div>
-                    <div class="stat-value" style="color:#1e293b;">{{ $transaksi->count() }}</div>
-                </div>
-            </td>
-            <td style="border:none;padding:0;width:33%;">
-                <div class="stat-box" style="margin:0 3px;">
-                    <div class="stat-label">Total Setor</div>
-                    <div class="stat-value" style="color:#065f46;">Rp {{ number_format($totalTabung, 0, ',', '.') }}</div>
-                </div>
-            </td>
-            <td style="border:none;padding:0;width:33%;">
-                <div class="stat-box" style="margin-left:6px;">
-                    <div class="stat-label">Total Tarik</div>
-                    <div class="stat-value" style="color:#9f1239;">Rp {{ number_format($totalTarik, 0, ',', '.') }}</div>
-                </div>
+            <td>
+                <table class="meta-info">
+                    <tr>
+                        <td class="label">Dicetak Tanggal</td>
+                        <td class="colon">:</td>
+                        <td>{{ now()->translatedFormat('d F Y') }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Pukul</td>
+                        <td class="colon">:</td>
+                        <td>{{ now()->translatedFormat('H:i') }} WIB</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Dicetak Oleh</td>
+                        <td class="colon">:</td>
+                        <td>{{ Auth::user()->name ?? 'Administrator' }}</td>
+                    </tr>
+                </table>
             </td>
         </tr>
     </table>
 
-    <table>
+    <div style="font-weight:bold; font-size:10pt; margin-bottom:8px;">Rincian Transaksi:</div>
+    <table class="data-table">
         <thead>
             <tr>
-                <th>No</th>
-                <th>Tanggal</th>
-                <th>Nama Siswa</th>
-                <th>Kelas</th>
-                <th>Jenis</th>
-                <th>Jumlah</th>
-                <th>Saldo Sebelum</th>
-                <th>Saldo Sesudah</th>
+                <th class="text-center" width="5%">No</th>
+                <th width="12%">Tanggal</th>
+                <th width="20%">Nama Siswa</th>
+                <th width="10%">Kelas</th>
+                <th width="10%">Jenis</th>
+                <th class="text-right" width="15%">Jumlah</th>
+                <th class="text-right" width="15%">Saldo Sesudah</th>
                 <th>Keterangan</th>
             </tr>
         </thead>
         <tbody>
             @forelse($transaksi as $i => $t)
             <tr>
-                <td>{{ $i + 1 }}</td>
-                <td>{{ $t->created_at->format('d/m/Y') }}</td>
+                <td class="text-center">{{ $i + 1 }}</td>
+                <td>{{ $t->created_at->translatedFormat('d M Y') }}</td>
                 <td>{{ $t->siswa->nama }}</td>
                 <td>{{ $t->siswa->kelas->nama_kelas }}</td>
-                <td>
-                    {{ $t->jenis === 'tabung' ? 'Setor' : 'Tarik' }}
-                </td>
-                <td>
-                    {{ $t->jenis === 'tabung' ? '+' : '-' }}Rp {{ number_format($t->jumlah, 0, ',', '.') }}
-                </td>
-                <td>Rp {{ number_format($t->saldo_sebelum, 0, ',', '.') }}</td>
-                <td>Rp {{ number_format($t->saldo_sesudah, 0, ',', '.') }}</td>
-                <td>{{ $t->keterangan ?? '—' }}</td>
+                <td>{{ $t->jenis === 'tabung' ? 'Setor' : 'Tarik' }}</td>
+                <td class="text-right">{{ $t->jenis === 'tabung' ? '+' : '-' }}Rp {{ number_format($t->jumlah, 0, ',', '.') }}</td>
+                <td class="text-right">Rp {{ number_format($t->saldo_sesudah, 0, ',', '.') }}</td>
+                <td>{{ $t->keterangan ?? '-' }}</td>
             </tr>
             @empty
             <tr>
-                <td colspan="9" style="text-align:center;padding:20px;color:#94a3b8;">Tidak ada data.</td>
+                <td colspan="8" class="text-center" style="padding:20px;">Tidak ada data transaksi pada periode ini.</td>
             </tr>
             @endforelse
         </tbody>
         @if($transaksi->count() > 0)
         <tfoot>
             <tr>
-                <td colspan="5" style="text-align:right;">TOTAL</td>
-                <td>+Rp {{ number_format($totalTabung, 0, ',', '.') }} / -Rp {{ number_format($totalTarik, 0, ',', '.') }}</td>
-                <td></td>
-                <td>Net: Rp {{ number_format($totalNet, 0, ',', '.') }}</td>
-                <td></td>
+                <td colspan="5" class="text-right">Total Setor</td>
+                <td class="text-right">+Rp {{ number_format($totalTabung, 0, ',', '.') }}</td>
+                <td colspan="2"></td>
+            </tr>
+            <tr>
+                <td colspan="5" class="text-right">Total Tarik</td>
+                <td class="text-right">-Rp {{ number_format($totalTarik, 0, ',', '.') }}</td>
+                <td colspan="2"></td>
+            </tr>
+            <tr>
+                <td colspan="5" class="text-right" style="font-size: 10pt;">Saldo Akhir (Net)</td>
+                <td class="text-right" style="font-size: 10pt;">Rp {{ number_format($totalNet, 0, ',', '.') }}</td>
+                <td colspan="2"></td>
             </tr>
         </tfoot>
         @endif
     </table>
 
-    <div class="footer">
-        <span>Sistem Informasi Tabungan Siswa TK</span>
-        <span>Dicetak oleh sistem pada {{ now()->format('d F Y') }}</span>
+    <div class="ttd-area">
+        <div class="ttd-box" style="float: left;">
+            <div>Mengetahui,</div>
+            <div style="margin-top: 5px;">Kepala TK / Ketua</div>
+            <div class="ttd-name">{{ $ketua->name ?? '.......................' }}</div>
+        </div>
+        <div class="ttd-box" style="float: right;">
+            <div>Cirebon, {{ now()->translatedFormat('d F Y') }}</div>
+            <div style="margin-top: 5px;">Bendahara Sekolah</div>
+            <div class="ttd-name">{{ $bendahara->name ?? '.......................' }}</div>
+        </div>
+        <div class="clear"></div>
     </div>
 
 </body>

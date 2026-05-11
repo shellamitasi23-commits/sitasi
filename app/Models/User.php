@@ -24,7 +24,7 @@ class User extends Authenticatable
         ];
     }
 
-    // Relasi: user bisa mencatat banyak transaksi
+    // relasi user dengan transaksi
     public function transaksi()
     {
         return $this->hasMany(Transaksi::class);

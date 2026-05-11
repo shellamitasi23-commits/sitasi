@@ -2,84 +2,65 @@
 @section('title', 'Detail Siswa')
 
 @section('content')
-<style>
-.page-title{font-size:20px;font-weight:600;color:#1e293b}
-.page-sub{font-size:13px;color:#64748b;margin-top:2px}
-.grid-2{display:grid;grid-template-columns:1fr 2fr;gap:16px;align-items:start}
-.card{background:#fff;border-radius:14px;border:1px solid #e2e8f0;overflow:hidden}
-.card-header{padding:16px 20px;border-bottom:1px solid #f1f5f9;background:#fafbff}
-.card-header-title{font-size:14px;font-weight:600;color:#1e293b}
-.card-body{padding:20px}
-.avatar-lg{width:64px;height:64px;border-radius:16px;background:#dbeafe;color:#1d4ed8;font-size:22px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
-.info-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #f8fafc;font-size:13px}
-.info-row:last-child{border-bottom:none}
-.info-label{color:#64748b}
-.info-value{font-weight:500;color:#1e293b}
-.saldo-big{text-align:center;padding:16px 0;border-bottom:1px solid #f1f5f9}
-.tbl{width:100%;border-collapse:collapse}
-.tbl th{padding:10px 16px;text-align:left;font-size:12px;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;border-bottom:1px solid #f1f5f9;background:#f8fafc}
-.tbl td{padding:12px 16px;font-size:13px;color:#334155;border-bottom:1px solid #f8fafc}
-.tbl tr:last-child td{border-bottom:none}
-.badge-tabung{background:#dcfce7;color:#16a34a;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:500}
-.badge-tarik{background:#ffe4e6;color:#e11d48;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:500}
-</style>
 
-<div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+<div class="flex items-center gap-3 mb-5">
     <a href="{{ route('siswa.index') }}" 
-       style="display:flex;align-items:center;justify-content:center;width:34px;height:34px;background:#fff;border:1px solid #e2e8f0;border-radius:8px;color:#64748b;text-decoration:none;">
-        <i class="ti ti-arrow-left" style="font-size:16px;" aria-hidden="true"></i>
+       class="flex items-center justify-center w-[34px] h-[34px] bg-white border border-slate-200 rounded-lg text-slate-500 hover:bg-slate-50 transition-colors">
+        <i class="ti ti-arrow-left text-base" aria-hidden="true"></i>
     </a>
     <div>
-        <div class="page-title">Detail Siswa</div>
-        <div class="page-sub">Informasi lengkap dan riwayat transaksi</div>
+        <div class="text-xl font-semibold text-slate-800">Detail Siswa</div>
+        <div class="text-sm text-slate-500 mt-0.5">Informasi lengkap dan riwayat transaksi</div>
     </div>
 </div>
 
-<div class="grid-2">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
 
     {{-- Kartu Profil --}}
-    <div class="card">
-        <div class="card-header">
-            <div class="card-header-title">Profil Siswa</div>
+    <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm col-span-1 md:col-span-1">
+        <div class="px-5 py-4 border-b border-slate-100 bg-slate-50/50">
+            <div class="text-sm font-semibold text-slate-800">Profil Siswa</div>
         </div>
-        <div class="card-body">
-            <div class="avatar-lg">{{ strtoupper(substr($siswa->nama, 0, 2)) }}</div>
-            <div style="text-align:center;margin-bottom:16px;">
-                <div style="font-size:16px;font-weight:600;color:#1e293b;">{{ $siswa->nama }}</div>
+        <div class="p-5">
+            <div class="w-16 h-16 rounded-2xl bg-blue-100 text-blue-700 text-2xl font-bold flex items-center justify-center mx-auto mb-3">
+                {{ strtoupper(substr($siswa->nama, 0, 2)) }}
+            </div>
+            <div class="text-center mb-4">
+                <div class="text-base font-semibold text-slate-800">{{ $siswa->nama }}</div>
             </div>
 
-            <div class="saldo-big">
-                <div style="font-size:12px;color:#64748b;margin-bottom:4px;">Total Saldo</div>
-                <div style="font-size:24px;font-weight:700;color:#16a34a;">Rp {{ number_format($siswa->saldo, 0, ',', '.') }}</div>
+            <div class="text-center py-4 border-b border-slate-100">
+                <div class="text-xs text-slate-500 mb-1">Total Saldo</div>
+                <div class="text-2xl font-bold text-emerald-600">Rp {{ number_format($siswa->saldo, 0, ',', '.') }}</div>
             </div>
 
-            <div style="margin-top:12px;">
-                <div class="info-row">
-                    <span class="info-label">Kelas</span>
-                    <span class="info-value">{{ $siswa->kelas->nama_kelas }}</span>
+            <div class="mt-3">
+                <div class="flex justify-between items-center py-2.5 border-b border-slate-50 text-sm">
+                    <span class="text-slate-500">Kelas</span>
+                    <span class="font-medium text-slate-800">{{ $siswa->kelas->nama_kelas }}</span>
                 </div>
-                <div class="info-row">
-                    <span class="info-label">Tahun Ajaran</span>
-                    <span class="info-value">{{ $siswa->kelas->tahun_ajaran }}</span>
+                <div class="flex justify-between items-center py-2.5 border-b border-slate-50 text-sm">
+                    <span class="text-slate-500">Tahun Ajaran</span>
+                    <span class="font-medium text-slate-800">{{ $siswa->kelas->tahun_ajaran }}</span>
                 </div>
-                <div class="info-row">
-                    <span class="info-label">Total Transaksi</span>
-                    <span class="info-value">{{ $siswa->transaksi->count() }}x</span>
+                <div class="flex justify-between items-center py-2.5 border-b border-slate-50 text-sm">
+                    <span class="text-slate-500">Total Transaksi</span>
+                    <span class="font-medium text-slate-800">{{ $siswa->transaksi->count() }}x</span>
                 </div>
-                <div class="info-row">
-                    <span class="info-label">Terdaftar</span>
-                    <span class="info-value">{{ $siswa->created_at->format('d M Y') }}</span>
+                <div class="flex justify-between items-center py-2.5 text-sm">
+                    <span class="text-slate-500">Terdaftar</span>
+                    <span class="font-medium text-slate-800">{{ $siswa->created_at->translatedFormat('d M Y') }}</span>
                 </div>
             </div>
 
             @if(Auth::user()->role === 'bendahara')
-                <div style="margin-top:16px;display:flex;gap:8px;">
+                <div class="mt-4 flex gap-2">
                     <a href="{{ route('siswa.edit', $siswa) }}" 
-                       style="flex:1;text-align:center;background:#eff6ff;color:#2563eb;padding:9px;border-radius:8px;font-size:13px;font-weight:500;text-decoration:none;border:1px solid #bfdbfe;">
+                       class="flex-1 text-center bg-blue-50 text-blue-600 py-2 px-3 rounded-lg text-sm font-medium border border-blue-200 hover:bg-blue-100 transition-colors">
                         Edit Data
                     </a>
                     <a href="{{ route('transaksi.create', ['siswa_id' => $siswa->id]) }}" 
-                       style="flex:1;text-align:center;background:#2563eb;color:#fff;padding:9px;border-radius:8px;font-size:13px;font-weight:500;text-decoration:none;">
+                       class="flex-1 text-center bg-blue-600 text-white py-2 px-3 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
                         + Transaksi
                     </a>
                 </div>
@@ -88,44 +69,46 @@
     </div>
 
     {{-- Riwayat Transaksi --}}
-    <div class="card">
-        <div class="card-header">
-            <div class="card-header-title">Riwayat Transaksi</div>
+    <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm col-span-1 md:col-span-2">
+        <div class="px-5 py-4 border-b border-slate-100 bg-slate-50/50">
+            <div class="text-sm font-semibold text-slate-800">Riwayat Transaksi</div>
         </div>
-        <table class="tbl">
-            <thead>
-                <tr>
-                    <th>Tanggal</th>
-                    <th>Jenis</th>
-                    <th>Jumlah</th>
-                    <th>Saldo Sesudah</th>
-                    <th>Keterangan</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($siswa->transaksi->sortByDesc('created_at') as $t)
-                <tr>
-                    <td style="color:#64748b;">{{ $t->created_at->format('d M Y') }}</td>
-                    <td>
-                        @if($t->jenis === 'tabung')
-                            <span class="badge-tabung">Tabung</span>
-                        @else
-                            <span class="badge-tarik">Tarik</span>
-                        @endif
-                    </td>
-                    <td style="font-weight:500;">Rp {{ number_format($t->jumlah, 0, ',', '.') }}</td>
-                    <td>Rp {{ number_format($t->saldo_sesudah, 0, ',', '.') }}</td>
-                    <td style="color:#64748b;">{{ $t->keterangan ?? '-' }}</td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="5" style="padding:32px;text-align:center;color:#94a3b8;font-size:13px;">
-                        Belum ada riwayat transaksi
-                    </td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
+        <div class="overflow-x-auto">
+            <table class="w-full border-collapse">
+                <thead class="bg-slate-50">
+                    <tr>
+                        <th class="px-5 py-3 text-left text-xs text-slate-500 font-semibold uppercase tracking-wider border-b border-slate-100">Tanggal</th>
+                        <th class="px-5 py-3 text-left text-xs text-slate-500 font-semibold uppercase tracking-wider border-b border-slate-100">Jenis</th>
+                        <th class="px-5 py-3 text-left text-xs text-slate-500 font-semibold uppercase tracking-wider border-b border-slate-100">Jumlah</th>
+                        <th class="px-5 py-3 text-left text-xs text-slate-500 font-semibold uppercase tracking-wider border-b border-slate-100">Saldo Sesudah</th>
+                        <th class="px-5 py-3 text-left text-xs text-slate-500 font-semibold uppercase tracking-wider border-b border-slate-100">Keterangan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($siswa->transaksi->sortByDesc('created_at') as $t)
+                    <tr class="hover:bg-slate-50/50 transition-colors">
+                        <td class="px-5 py-3 text-sm text-slate-500 border-b border-slate-50">{{ $t->created_at->translatedFormat('d M Y') }}</td>
+                        <td class="px-5 py-3 text-sm border-b border-slate-50">
+                            @if($t->jenis === 'tabung')
+                                <span class="bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-full text-xs font-semibold border border-emerald-200">Tabung</span>
+                            @else
+                                <span class="bg-rose-100 text-rose-800 px-2.5 py-1 rounded-full text-xs font-semibold border border-rose-200">Tarik</span>
+                            @endif
+                        </td>
+                        <td class="px-5 py-3 text-sm font-semibold text-slate-800 border-b border-slate-50">Rp {{ number_format($t->jumlah, 0, ',', '.') }}</td>
+                        <td class="px-5 py-3 text-sm text-slate-700 border-b border-slate-50">Rp {{ number_format($t->saldo_sesudah, 0, ',', '.') }}</td>
+                        <td class="px-5 py-3 text-sm text-slate-500 border-b border-slate-50">{{ $t->keterangan ?? '-' }}</td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="5" class="px-5 py-8 text-center text-sm text-slate-400">
+                            Belum ada riwayat transaksi
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 @endsection

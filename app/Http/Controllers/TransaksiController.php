@@ -46,10 +46,10 @@ class TransaksiController extends Controller
     $request->validate([
       'siswa_id' => 'required|exists:siswa,id',
       'jenis' => 'required|in:tabung,tarik',
-      'jumlah' => 'required|numeric|min:1000',
+      'jumlah' => 'required|numeric|min:500',
       'keterangan' => 'nullable|string|max:255',
     ], [
-      'jumlah.min' => 'Jumlah transaksi minimal Rp 1.000.',
+      'jumlah.min' => 'Jumlah transaksi minimal Rp 500.',
     ]);
 
     $siswa = Siswa::lockForUpdate()->findOrFail($request->siswa_id);

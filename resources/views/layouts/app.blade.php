@@ -8,21 +8,21 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
     @stack('styles')
 </head>
-<body style="margin:0; font-family:sans-serif; background:#f1f5f9;">
+<body class="m-0 font-sans bg-slate-100 text-slate-800 antialiased">
 
-    <div style="display:flex; min-height:100vh;">
+    <div class="flex min-h-screen">
 
         {{-- Sidebar --}}
         @include('partials.sidebar')
 
         {{-- Main --}}
-        <div style="flex:1; display:flex; flex-direction:column; overflow:hidden;">
+        <div class="flex-1 flex flex-col overflow-hidden">
 
             {{-- Navbar --}}
             @include('partials.navbar')
 
             {{-- Konten --}}
-            <main style="flex:1; padding:24px; overflow-y:auto;">
+            <main class="flex-1 p-6 overflow-y-auto">
                 @yield('content')
             </main>
 

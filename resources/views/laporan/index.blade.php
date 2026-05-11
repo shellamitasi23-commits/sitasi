@@ -2,46 +2,24 @@
 @section('title', 'Laporan Tabungan')
 
 @section('content')
-<style>
-.page-title{font-size:20px;font-weight:600;color:#1e293b}
-.page-sub{font-size:13px;color:#64748b;margin-top:2px}
-.btn-primary{display:inline-flex;align-items:center;gap:6px;background:#2563eb;color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:500;border:none;cursor:pointer;text-decoration:none}
-.btn-export{display:inline-flex;align-items:center;gap:6px;background:#dc2626;color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:500;border:none;cursor:pointer;text-decoration:none}
-.card{background:#fff;border-radius:14px;border:1px solid #e2e8f0;overflow:hidden}
-.card-header{padding:16px 20px;border-bottom:1px solid #f1f5f9;display:flex;justify-content:space-between;align-items:center;background:#fafbff}
-.tbl{width:100%;border-collapse:collapse}
-.tbl thead tr{background:#f8fafc}
-.tbl th{padding:11px 20px;text-align:left;font-size:12px;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid #f1f5f9}
-.tbl td{padding:13px 20px;font-size:13px;color:#334155;border-bottom:1px solid #f8fafc}
-.tbl tr:last-child td{border-bottom:none}
-.tbl tbody tr:hover td{background:#f8faff}
-.badge-tabung{background:#d1fae5;color:#065f46;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;border:1px solid #a7f3d0}
-.badge-tarik{background:#ffe4e6;color:#9f1239;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;border:1px solid #fecdd3}
-.filter-card{background:#fff;border-radius:14px;border:1px solid #e2e8f0;padding:16px 20px;margin-bottom:16px}
-.filter-select{border:1px solid #e2e8f0;border-radius:8px;padding:7px 12px;font-size:13px;color:#334155;background:#fff;outline:none;cursor:pointer}
-.filter-select:focus{border-color:#2563eb}
-.stat-box{background:#fff;border-radius:12px;border:1px solid #e2e8f0;padding:14px 18px;flex:1}
-.stat-label{font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:.04em;font-weight:600}
-.stat-value{font-size:18px;font-weight:700;margin-top:4px}
-</style>
 
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+<div class="flex justify-between items-center mb-5">
     <div>
-        <div class="page-title">Laporan Tabungan</div>
-        <div class="page-sub">Rekap transaksi berdasarkan filter yang dipilih</div>
+        <div class="text-xl font-semibold text-slate-800">Laporan Tabungan</div>
+        <div class="text-sm text-slate-500 mt-0.5">Rekap transaksi berdasarkan filter yang dipilih</div>
     </div>
     {{-- Tombol export dengan query string filter yang sama --}}
-    <a href="{{ route('laporan.export', request()->query()) }}" class="btn-export">
+    <a href="{{ route('laporan.export', request()->query()) }}" class="inline-flex items-center gap-1.5 bg-red-600 hover:bg-red-700 text-white px-4 py-2.5 rounded-lg text-sm font-medium transition-colors">
         <i class="ti ti-file-type-pdf" aria-hidden="true"></i> Export PDF
     </a>
 </div>
 
 {{-- Filter --}}
-<div class="filter-card">
-    <form method="GET" action="{{ route('laporan.index') }}" style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;">
+<div class="bg-white rounded-xl border border-slate-200 p-5 mb-4 shadow-sm">
+    <form method="GET" action="{{ route('laporan.index') }}" class="flex gap-3 flex-wrap items-end">
         <div>
-            <div style="font-size:11px;color:#64748b;margin-bottom:4px;font-weight:500;">KELAS</div>
-            <select name="kelas_id" class="filter-select">
+            <div class="text-xs text-slate-500 mb-1 font-medium">KELAS</div>
+            <select name="kelas_id" class="border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-700 bg-white outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
                 <option value="">Semua Kelas</option>
                 @foreach($kelasList as $k)
                     <option value="{{ $k->id }}" {{ request('kelas_id') == $k->id ? 'selected' : '' }}>
@@ -51,8 +29,8 @@
             </select>
         </div>
         <div>
-            <div style="font-size:11px;color:#64748b;margin-bottom:4px;font-weight:500;">SISWA</div>
-            <select name="siswa_id" class="filter-select">
+            <div class="text-xs text-slate-500 mb-1 font-medium">SISWA</div>
+            <select name="siswa_id" class="border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-700 bg-white outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
                 <option value="">Semua Siswa</option>
                 @foreach($siswaList as $s)
                     <option value="{{ $s->id }}" {{ request('siswa_id') == $s->id ? 'selected' : '' }}>
@@ -62,8 +40,8 @@
             </select>
         </div>
         <div>
-            <div style="font-size:11px;color:#64748b;margin-bottom:4px;font-weight:500;">BULAN</div>
-            <select name="bulan" class="filter-select">
+            <div class="text-xs text-slate-500 mb-1 font-medium">BULAN</div>
+            <select name="bulan" class="border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-700 bg-white outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
                 <option value="">Semua Bulan</option>
                 @foreach(['1'=>'Januari','2'=>'Februari','3'=>'Maret','4'=>'April','5'=>'Mei','6'=>'Juni','7'=>'Juli','8'=>'Agustus','9'=>'September','10'=>'Oktober','11'=>'November','12'=>'Desember'] as $num => $nama)
                     <option value="{{ $num }}" {{ request('bulan') == $num ? 'selected' : '' }}>{{ $nama }}</option>
@@ -71,19 +49,19 @@
             </select>
         </div>
         <div>
-            <div style="font-size:11px;color:#64748b;margin-bottom:4px;font-weight:500;">TAHUN</div>
-            <select name="tahun" class="filter-select">
+            <div class="text-xs text-slate-500 mb-1 font-medium">TAHUN</div>
+            <select name="tahun" class="border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-700 bg-white outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
                 <option value="">Semua Tahun</option>
                 @foreach($tahunList as $y)
                     <option value="{{ $y }}" {{ request('tahun') == $y ? 'selected' : '' }}>{{ $y }}</option>
                 @endforeach
             </select>
         </div>
-        <button type="submit" class="btn-primary" style="height:36px;padding:0 16px;">
+        <button type="submit" class="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white h-[38px] px-4 rounded-lg text-sm font-medium transition-colors">
             <i class="ti ti-filter" aria-hidden="true"></i> Tampilkan
         </button>
         @if(request()->hasAny(['siswa_id','kelas_id','bulan','tahun']))
-            <a href="{{ route('laporan.index') }}" style="display:inline-flex;align-items:center;gap:4px;height:36px;padding:0 14px;border:1px solid #e2e8f0;border-radius:10px;font-size:13px;color:#64748b;text-decoration:none;">
+            <a href="{{ route('laporan.index') }}" class="inline-flex items-center gap-1.5 h-[38px] px-3.5 border border-slate-200 hover:bg-slate-50 rounded-lg text-sm text-slate-500 transition-colors">
                 <i class="ti ti-x" aria-hidden="true"></i> Reset
             </a>
         @endif
@@ -91,93 +69,95 @@
 </div>
 
 {{-- Ringkasan --}}
-<div style="display:flex;gap:12px;margin-bottom:16px;">
-    <div class="stat-box">
-        <div class="stat-label">Total Transaksi</div>
-        <div class="stat-value" style="color:#1e293b;">{{ $transaksi->count() }}</div>
+<div class="flex gap-3 mb-4">
+    <div class="bg-white rounded-xl border border-slate-200 p-4 flex-1 shadow-sm">
+        <div class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Total Transaksi</div>
+        <div class="text-lg font-bold mt-1 text-slate-800">{{ $transaksi->count() }}</div>
     </div>
-    <div class="stat-box">
-        <div class="stat-label">Total Setor</div>
-        <div class="stat-value" style="color:#065f46;">Rp {{ number_format($totalTabung, 0, ',', '.') }}</div>
+    <div class="bg-white rounded-xl border border-slate-200 p-4 flex-1 shadow-sm">
+        <div class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Total Setor</div>
+        <div class="text-lg font-bold mt-1 text-emerald-800">Rp {{ number_format($totalTabung, 0, ',', '.') }}</div>
     </div>
-    <div class="stat-box">
-        <div class="stat-label">Total Tarik</div>
-        <div class="stat-value" style="color:#9f1239;">Rp {{ number_format($totalTarik, 0, ',', '.') }}</div>
+    <div class="bg-white rounded-xl border border-slate-200 p-4 flex-1 shadow-sm">
+        <div class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Total Tarik</div>
+        <div class="text-lg font-bold mt-1 text-rose-800">Rp {{ number_format($totalTarik, 0, ',', '.') }}</div>
     </div>
-    <div class="stat-box">
-        <div class="stat-label">Selisih (Net)</div>
-        <div class="stat-value" style="color:{{ $totalNet >= 0 ? '#065f46' : '#9f1239' }};">
+    <div class="bg-white rounded-xl border border-slate-200 p-4 flex-1 shadow-sm">
+        <div class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Selisih (Net)</div>
+        <div class="text-lg font-bold mt-1 {{ $totalNet >= 0 ? 'text-emerald-800' : 'text-rose-800' }}">
             Rp {{ number_format(abs($totalNet), 0, ',', '.') }}
-            <span style="font-size:12px;font-weight:400;">{{ $totalNet >= 0 ? '(surplus)' : '(defisit)' }}</span>
+            <span class="text-xs font-normal">{{ $totalNet >= 0 ? '(surplus)' : '(defisit)' }}</span>
         </div>
     </div>
 </div>
 
 {{-- Tabel --}}
-<div class="card">
-    <div class="card-header">
+<div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+    <div class="px-5 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
         <div>
-            <div style="font-size:14px;font-weight:600;color:#1e293b;">Rincian Transaksi</div>
-            <div style="font-size:12px;color:#94a3b8;margin-top:1px;">{{ $transaksi->count() }} transaksi ditemukan</div>
+            <div class="text-sm font-semibold text-slate-800">Rincian Transaksi</div>
+            <div class="text-xs text-slate-500 mt-0.5">{{ $transaksi->count() }} transaksi ditemukan</div>
         </div>
     </div>
-    <table class="tbl">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Tanggal</th>
-                <th>Siswa</th>
-                <th>Kelas</th>
-                <th>Jenis</th>
-                <th>Jumlah</th>
-                <th>Saldo Sesudah</th>
-                <th>Keterangan</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($transaksi as $i => $t)
-            <tr>
-                <td style="color:#94a3b8;font-size:12px;">{{ str_pad($i+1, 2, '0', STR_PAD_LEFT) }}</td>
-                <td style="font-size:12px;color:#64748b;">{{ $t->created_at->format('d M Y') }}</td>
-                <td>
-                    <div style="font-weight:600;color:#1e293b;">{{ $t->siswa->nama }}</div>
-                </td>
-                <td style="font-size:12px;">{{ $t->siswa->kelas->nama_kelas }}</td>
-                <td>
-                    @if($t->jenis === 'tabung')
-                        <span class="badge-tabung">↑ Setor</span>
-                    @else
-                        <span class="badge-tarik">↓ Tarik</span>
-                    @endif
-                </td>
-                <td>
-                    <span style="{{ $t->jenis === 'tabung' ? 'color:#065f46' : 'color:#9f1239' }};font-weight:600;">
-                        {{ $t->jenis === 'tabung' ? '+' : '-' }}Rp {{ number_format($t->jumlah, 0, ',', '.') }}
-                    </span>
-                </td>
-                <td style="font-weight:600;">Rp {{ number_format($t->saldo_sesudah, 0, ',', '.') }}</td>
-                <td style="color:#64748b;font-size:12px;">{{ $t->keterangan ?? '—' }}</td>
-            </tr>
-            @empty
-            <tr>
-                <td colspan="8" style="padding:40px;text-align:center;color:#94a3b8;font-size:13px;">
-                    Tidak ada data transaksi untuk filter yang dipilih.
-                </td>
-            </tr>
-            @endforelse
-        </tbody>
-        @if($transaksi->count() > 0)
-        <tfoot>
-            <tr style="background:#f8fafc;">
-                <td colspan="5" style="padding:12px 20px;font-size:12px;font-weight:600;color:#64748b;text-transform:uppercase;">Total</td>
-                <td style="padding:12px 20px;font-weight:700;color:#1e293b;font-size:13px;">
-                    <span style="color:#065f46;">+Rp {{ number_format($totalTabung, 0, ',', '.') }}</span><br>
-                    <span style="color:#9f1239;">-Rp {{ number_format($totalTarik, 0, ',', '.') }}</span>
-                </td>
-                <td colspan="2"></td>
-            </tr>
-        </tfoot>
-        @endif
-    </table>
+    <div class="overflow-x-auto">
+        <table class="w-full border-collapse">
+            <thead class="bg-slate-50">
+                <tr>
+                    <th class="px-5 py-3 text-left text-xs text-slate-500 font-semibold uppercase tracking-wider border-b border-slate-100">No</th>
+                    <th class="px-5 py-3 text-left text-xs text-slate-500 font-semibold uppercase tracking-wider border-b border-slate-100">Tanggal</th>
+                    <th class="px-5 py-3 text-left text-xs text-slate-500 font-semibold uppercase tracking-wider border-b border-slate-100">Siswa</th>
+                    <th class="px-5 py-3 text-left text-xs text-slate-500 font-semibold uppercase tracking-wider border-b border-slate-100">Kelas</th>
+                    <th class="px-5 py-3 text-left text-xs text-slate-500 font-semibold uppercase tracking-wider border-b border-slate-100">Jenis</th>
+                    <th class="px-5 py-3 text-left text-xs text-slate-500 font-semibold uppercase tracking-wider border-b border-slate-100">Jumlah</th>
+                    <th class="px-5 py-3 text-left text-xs text-slate-500 font-semibold uppercase tracking-wider border-b border-slate-100">Saldo Sesudah</th>
+                    <th class="px-5 py-3 text-left text-xs text-slate-500 font-semibold uppercase tracking-wider border-b border-slate-100">Keterangan</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($transaksi as $i => $t)
+                <tr class="hover:bg-slate-50/50 transition-colors">
+                    <td class="px-5 py-3 text-sm text-slate-500 border-b border-slate-50">{{ str_pad($i+1, 2, '0', STR_PAD_LEFT) }}</td>
+                    <td class="px-5 py-3 text-xs text-slate-500 border-b border-slate-50">{{ $t->created_at->translatedFormat('d M Y') }}</td>
+                    <td class="px-5 py-3 text-sm text-slate-800 font-medium border-b border-slate-50">
+                        {{ $t->siswa->nama }}
+                    </td>
+                    <td class="px-5 py-3 text-xs text-slate-700 border-b border-slate-50">{{ $t->siswa->kelas->nama_kelas }}</td>
+                    <td class="px-5 py-3 text-sm border-b border-slate-50">
+                        @if($t->jenis === 'tabung')
+                            <span class="bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-full text-xs font-semibold border border-emerald-200">Setor</span>
+                        @else
+                            <span class="bg-rose-100 text-rose-800 px-2.5 py-1 rounded-full text-xs font-semibold border border-rose-200">Tarik</span>
+                        @endif
+                    </td>
+                    <td class="px-5 py-3 text-sm border-b border-slate-50">
+                        <span class="{{ $t->jenis === 'tabung' ? 'text-emerald-800' : 'text-rose-800' }} font-semibold">
+                            {{ $t->jenis === 'tabung' ? '+' : '-' }}Rp {{ number_format($t->jumlah, 0, ',', '.') }}
+                        </span>
+                    </td>
+                    <td class="px-5 py-3 text-sm text-slate-800 font-semibold border-b border-slate-50">Rp {{ number_format($t->saldo_sesudah, 0, ',', '.') }}</td>
+                    <td class="px-5 py-3 text-xs text-slate-500 border-b border-slate-50">{{ $t->keterangan ?? '—' }}</td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="8" class="px-5 py-10 text-center text-sm text-slate-500">
+                        Tidak ada data transaksi untuk filter yang dipilih.
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+            @if($transaksi->count() > 0)
+            <tfoot class="bg-slate-50">
+                <tr>
+                    <td colspan="5" class="px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider text-right">Total</td>
+                    <td class="px-5 py-3 text-sm font-bold text-slate-800">
+                        <span class="text-emerald-800">+Rp {{ number_format($totalTabung, 0, ',', '.') }}</span><br>
+                        <span class="text-rose-800">-Rp {{ number_format($totalTarik, 0, ',', '.') }}</span>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+            </tfoot>
+            @endif
+        </table>
+    </div>
 </div>
 @endsection

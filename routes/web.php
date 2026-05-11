@@ -8,19 +8,13 @@ use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\LaporanController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| WEB ROUTES
-|--------------------------------------------------------------------------
-*/
-
-// ==================== ROOT ====================
+// route web
 
 Route::get('/', function () {
     return redirect()->route('login');
 });
 
-// ==================== AUTH ====================
+// auth
 
 Route::get('/login', [AuthController::class, 'showLogin'])
     ->name('login');
@@ -30,24 +24,16 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])
     ->name('logout');
 
-// ==================== PROTECTED ROUTES ====================
+// protected routes
 
 Route::middleware(['auth'])->group(function () {
 
-    /*
-    |--------------------------------------------------------------------------
-    | DASHBOARD
-    |--------------------------------------------------------------------------
-    */
+   //dashboard
 
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
 
-    /*
-    |--------------------------------------------------------------------------
-    | LAPORAN
-    |--------------------------------------------------------------------------
-    */
+    //laporan
 
     Route::get('/laporan', [LaporanController::class, 'index'])
         ->name('laporan.index');
@@ -55,22 +41,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/laporan/export', [LaporanController::class, 'export'])
         ->name('laporan.export');
 
-    /*
-    |--------------------------------------------------------------------------
-    | KELAS
-    |--------------------------------------------------------------------------
-    | Semua user login bisa melihat
-    */
+    //kelas
 
     Route::get('/kelas', [KelasController::class, 'index'])
         ->name('kelas.index');
 
-    /*
-    |--------------------------------------------------------------------------
-    | SISWA
-    |--------------------------------------------------------------------------
-    | Semua user login bisa melihat
-    */
+    //siswa
 
     Route::get('/siswa', [SiswaController::class, 'index'])
         ->name('siswa.index');
@@ -79,12 +55,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('siswa.show')
         ->whereNumber('siswa');
 
-    /*
-    |--------------------------------------------------------------------------
-    | TRANSAKSI
-    |--------------------------------------------------------------------------
-    | Semua user login bisa melihat
-    */
+    //transaksi
 
     Route::get('/transaksi', [TransaksiController::class, 'index'])
         ->name('transaksi.index');
@@ -93,15 +64,11 @@ Route::middleware(['auth'])->group(function () {
         ->name('transaksi.show')
         ->whereNumber('transaksi');
 
-    /*
-    |--------------------------------------------------------------------------
-    | CRUD KHUSUS BENDAHARA
-    |--------------------------------------------------------------------------
-    */
+    //CRUD bendahara
 
     Route::middleware(['role:bendahara'])->group(function () {
 
-        // ==================== KELAS ====================
+        //CRUD kelas
 
         Route::get('/kelas/create', [KelasController::class, 'create'])
             ->name('kelas.create');
@@ -118,7 +85,7 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/kelas/{kelas}', [KelasController::class, 'destroy'])
             ->name('kelas.destroy');
 
-        // ==================== SISWA ====================
+        //CRUD siswa
 
         Route::get('/siswa/create', [SiswaController::class, 'create'])
             ->name('siswa.create');
@@ -135,7 +102,7 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/siswa/{siswa}', [SiswaController::class, 'destroy'])
             ->name('siswa.destroy');
 
-        // ==================== TRANSAKSI ====================
+        //CRUD transaksi
 
         Route::get('/transaksi/create', [TransaksiController::class, 'create'])
             ->name('transaksi.create');

@@ -86,12 +86,18 @@ class LaporanController extends Controller
     // Label filter untuk header PDF
     $filterLabel = $this->buildFilterLabel($request);
 
+    // Ambil data user bendahara dan ketua untuk tanda tangan
+    $bendahara = \App\Models\User::where('role', 'bendahara')->first();
+    $ketua = \App\Models\User::where('role', 'ketua')->first();
+
     $pdf = Pdf::loadView('laporan.pdf', compact(
       'transaksi',
       'totalTabung',
       'totalTarik',
       'totalNet',
-      'filterLabel'
+      'filterLabel',
+      'bendahara',
+      'ketua'
     ))->setPaper('a4', 'landscape');
 
     $filename = 'laporan-tabungan-' . now()->format('Ymd-His') . '.pdf';

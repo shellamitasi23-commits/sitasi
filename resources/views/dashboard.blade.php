@@ -4,43 +4,43 @@
 
 @section('content')
 
-    <h1 style="font-size:18px; font-weight:500; color:#1e293b; margin-bottom:20px;">Dashboard</h1>
+    <h1 class="text-3xl font-semibold text-slate-800 mb-5">Dashboard SITASI</h1>
 
     {{-- Stat Cards --}}
-    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:24px;">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         
-        <div style="background:#fff; border:0.5px solid #e2e8f0; border-radius:10px; padding:16px;">
-            <div style="font-size:12px; color:#64748b; margin-bottom:6px;">Total Siswa</div>
-            <div style="font-size:24px; font-weight:500; color:#1e293b;">{{ $totalSiswa }}</div>
-            <div style="font-size:11px; color:#94a3b8; margin-top:2px;">Semua kelas</div>
+        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+            <div class="text-xs font-medium text-slate-500 mb-1.5 uppercase tracking-wider">Total Siswa</div>
+            <div class="text-3xl font-bold text-slate-800">{{ $totalSiswa }}</div>
+            <div class="text-xs text-slate-400 mt-1">Semua kelas</div>
         </div>
 
-        <div style="background:#fff; border:0.5px solid #e2e8f0; border-radius:10px; padding:16px;">
-            <div style="font-size:12px; color:#64748b; margin-bottom:6px;">Total Tabungan</div>
-            <div style="font-size:24px; font-weight:500; color:#1e293b;">Rp {{ number_format($totalTabungan, 0, ',', '.') }}</div>
-            <div style="font-size:11px; color:#94a3b8; margin-top:2px;">Akumulasi semua siswa</div>
+        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+            <div class="text-xs font-medium text-slate-500 mb-1.5 uppercase tracking-wider">Total Tabungan</div>
+            <div class="text-3xl font-bold text-emerald-600">Rp {{ number_format($totalTabungan, 0, ',', '.') }}</div>
+            <div class="text-xs text-slate-400 mt-1">Akumulasi semua siswa</div>
         </div>
 
-        <div style="background:#fff; border:0.5px solid #e2e8f0; border-radius:10px; padding:16px;">
-            <div style="font-size:12px; color:#64748b; margin-bottom:6px;">Transaksi Hari Ini</div>
-            <div style="font-size:24px; font-weight:500; color:#1e293b;">{{ $transaksiHariIni }}</div>
-            <div style="font-size:11px; color:#94a3b8; margin-top:2px;">{{ now()->translatedFormat('d F Y') }}</div>
+        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+            <div class="text-xs font-medium text-slate-500 mb-1.5 uppercase tracking-wider">Transaksi Hari Ini</div>
+            <div class="text-3xl font-bold text-blue-600">{{ $transaksiHariIni }}</div>
+            <div class="text-xs text-slate-400 mt-1">{{ now()->translatedFormat('d F Y') }}</div>
         </div>
 
     </div>
 
     {{-- Grafik --}}
-    <div style="display:grid; grid-template-columns:2fr 1fr; gap:16px;">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
 
         {{-- Bar Chart: Transaksi 7 Hari --}}
-        <div style="background:#fff; border:0.5px solid #e2e8f0; border-radius:10px; padding:16px;">
-            <div style="font-size:13px; font-weight:500; color:#1e293b; margin-bottom:16px;">Transaksi 7 Hari Terakhir</div>
+        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm lg:col-span-2">
+            <div class="text-sm font-semibold text-slate-800 mb-4">Transaksi 7 Hari Terakhir</div>
             <canvas id="chartTransaksi" height="120"></canvas>
         </div>
 
         {{-- Bar Chart: Tabungan Per Kelas --}}
-        <div style="background:#fff; border:0.5px solid #e2e8f0; border-radius:10px; padding:16px;">
-            <div style="font-size:13px; font-weight:500; color:#1e293b; margin-bottom:16px;">Tabungan Per Kelas</div>
+        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm lg:col-span-1">
+            <div class="text-sm font-semibold text-slate-800 mb-4">Tabungan Per Kelas</div>
             <canvas id="chartKelas" height="120"></canvas>
         </div>
 
