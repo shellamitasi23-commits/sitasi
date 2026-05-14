@@ -8,12 +8,15 @@
         <div class="text-xl font-semibold text-slate-800">Data Kelas</div>
         <div class="text-sm text-slate-500 mt-0.5">Kelola data kelas siswa TK</div>
     </div>
+    
     @if(Auth::user()->role === 'bendahara')
         <a href="{{ route('kelas.create') }}" class="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg text-sm font-medium transition-colors">
             <i class="ti ti-plus" aria-hidden="true"></i> Tambah Kelas
         </a>
     @endif
+    
 </div>
+
 
 @if(session('success'))
     <div class="bg-emerald-100 border-l-4 border-emerald-500 text-emerald-800 px-4 py-3 rounded-lg text-sm mb-4">✓ {{ session('success') }}</div>
@@ -29,6 +32,12 @@
             <div class="text-xs text-slate-500 mt-0.5">Total {{ $kelas->count() }} kelas terdaftar</div>
         </div>
     </div>
+     {{-- Search --}}
+    <form action="{{ route('kelas.index') }}" method="GET" class="flex-1 flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-5 h-10 m-2">
+        <i class="ti ti-search text-slate-400 text-base shrink-0" aria-hidden="true"></i>
+        <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama siswa atau kelas..." 
+               class="border-none bg-transparent outline-none text-sm text-slate-700 w-full placeholder:text-slate-400 focus:ring-0">
+    </form>
     <div class="overflow-x-auto">
         <table class="w-full border-collapse">
             <thead class="bg-slate-50">

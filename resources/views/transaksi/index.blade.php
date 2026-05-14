@@ -96,6 +96,12 @@
             <div class="text-xs text-slate-500 mt-0.5">Menampilkan {{ $transaksi->firstItem() }}–{{ $transaksi->lastItem() }} dari {{ $transaksi->total() }} transaksi</div>
         </div>
     </div>
+         {{-- Search --}}
+    <form action="{{ route('kelas.index') }}" method="GET" class="flex-1 flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-5 h-10 m-2">
+        <i class="ti ti-search text-slate-400 text-base shrink-0" aria-hidden="true"></i>
+        <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama siswa atau kelas..." 
+               class="border-none bg-transparent outline-none text-sm text-slate-700 w-full placeholder:text-slate-400 focus:ring-0">
+    </form>
     <div class="overflow-x-auto">
         <table class="w-full border-collapse">
             <thead class="bg-slate-50">
