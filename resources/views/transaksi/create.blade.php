@@ -45,6 +45,19 @@
                 @enderror
             </div>
 
+            {{-- Petugas / Bendahara (Manual Input) --}}
+            <div class="mb-5">
+                <label class="block text-sm font-semibold text-gray-700 mb-2" for="nama_petugas">Nama Petugas / Bendahara</label>
+                <input type="text" name="nama_petugas" id="nama_petugas" 
+                       class="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm text-gray-900 outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all bg-white" 
+                       value="{{ old('nama_petugas', Auth::user()->name) }}" 
+                       placeholder="Masukkan nama Anda..." required>
+                @error('nama_petugas')
+                    <div class="text-xs text-red-600 mt-1.5">{{ $message }}</div>
+                @enderror
+                <div class="text-[10px] text-gray-400 mt-1 italic">* Ketikkan nama bendahara yang melakukan input ini</div>
+            </div>
+
             {{-- Info saldo siswa --}}
             <div id="saldo-info" class="bg-slate-50 border border-blue-200 rounded-xl p-4 mb-5 hidden">
                 <div class="text-xs text-blue-800 font-semibold" id="saldo-nama"></div>

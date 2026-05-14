@@ -57,7 +57,6 @@ class KelasController extends Controller
 
   public function destroy(Kelas $kelas)
   {
-    // Cek apakah masih ada siswa di kelas ini
     if ($kelas->siswa()->count() > 0) {
       return redirect()->route('kelas.index')
         ->with('error', 'Kelas tidak bisa dihapus karena masih memiliki siswa.');

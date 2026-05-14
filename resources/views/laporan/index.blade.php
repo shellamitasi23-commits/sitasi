@@ -110,6 +110,7 @@
                     <th class="px-5 py-3 text-left text-xs text-slate-500 font-semibold uppercase tracking-wider border-b border-slate-100">Jenis</th>
                     <th class="px-5 py-3 text-left text-xs text-slate-500 font-semibold uppercase tracking-wider border-b border-slate-100">Jumlah</th>
                     <th class="px-5 py-3 text-left text-xs text-slate-500 font-semibold uppercase tracking-wider border-b border-slate-100">Saldo Sesudah</th>
+                    <th class="px-5 py-3 text-left text-xs text-slate-500 font-semibold uppercase tracking-wider border-b border-slate-100">Petugas</th>
                     <th class="px-5 py-3 text-left text-xs text-slate-500 font-semibold uppercase tracking-wider border-b border-slate-100">Keterangan</th>
                 </tr>
             </thead>
@@ -135,11 +136,12 @@
                         </span>
                     </td>
                     <td class="px-5 py-3 text-sm text-slate-800 font-semibold border-b border-slate-50">Rp {{ number_format($t->saldo_sesudah, 0, ',', '.') }}</td>
+                    <td class="px-5 py-3 text-xs text-slate-700 border-b border-slate-50 font-medium">{{ $t->nama_petugas ?? $t->user->name }}</td>
                     <td class="px-5 py-3 text-xs text-slate-500 border-b border-slate-50">{{ $t->keterangan ?? '—' }}</td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="8" class="px-5 py-10 text-center text-sm text-slate-500">
+                    <td colspan="9" class="px-5 py-10 text-center text-sm text-slate-500">
                         Tidak ada data transaksi untuk filter yang dipilih.
                     </td>
                 </tr>

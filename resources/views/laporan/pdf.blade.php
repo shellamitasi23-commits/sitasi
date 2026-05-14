@@ -78,8 +78,9 @@
                 <th width="20%">Nama Siswa</th>
                 <th width="10%">Kelas</th>
                 <th width="10%">Jenis</th>
-                <th class="text-right" width="15%">Jumlah</th>
-                <th class="text-right" width="15%">Saldo Sesudah</th>
+                <th class="text-right" width="12%">Jumlah</th>
+                <th class="text-right" width="12%">Saldo Sesudah</th>
+                <th width="15%">Petugas</th>
                 <th>Keterangan</th>
             </tr>
         </thead>
@@ -93,11 +94,12 @@
                 <td>{{ $t->jenis === 'tabung' ? 'Setor' : 'Tarik' }}</td>
                 <td class="text-right">{{ $t->jenis === 'tabung' ? '+' : '-' }}Rp {{ number_format($t->jumlah, 0, ',', '.') }}</td>
                 <td class="text-right">Rp {{ number_format($t->saldo_sesudah, 0, ',', '.') }}</td>
+                <td>{{ $t->nama_petugas ?? $t->user->name }}</td>
                 <td>{{ $t->keterangan ?? '-' }}</td>
             </tr>
             @empty
             <tr>
-                <td colspan="8" class="text-center" style="padding:20px;">Tidak ada data transaksi pada periode ini.</td>
+                <td colspan="9" class="text-center" style="padding:20px;">Tidak ada data transaksi pada periode ini.</td>
             </tr>
             @endforelse
         </tbody>

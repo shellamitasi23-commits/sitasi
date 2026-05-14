@@ -9,9 +9,14 @@
         <div class="text-sm text-slate-500 mt-0.5">Riwayat setor dan tarik tabungan siswa</div>
     </div>
     @if(Auth::user()->role === 'bendahara')
-        <a href="{{ route('transaksi.create') }}" class="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg text-sm font-medium transition-colors">
-            <i class="ti ti-plus" aria-hidden="true"></i> Tambah Transaksi
-        </a>
+        <div class="flex gap-2">
+            <a href="{{ route('transaksi.trashed') }}" class="inline-flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors">
+                <i class="ti ti-trash-x" aria-hidden="true"></i> Riwayat Hapus
+            </a>
+            <a href="{{ route('transaksi.create') }}" class="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg text-sm font-medium transition-colors">
+                <i class="ti ti-plus" aria-hidden="true"></i> Tambah Transaksi
+            </a>
+        </div>
     @endif
 </div>
 
@@ -143,18 +148,20 @@
                     <td class="px-5 py-3 text-sm text-slate-800 font-semibold border-b border-slate-50">
                         Rp {{ number_format($t->saldo_sesudah, 0, ',', '.') }}
                     </td>
-                    <td class="px-5 py-3 text-xs text-slate-500 border-b border-slate-50">{{ $t->user->name }}</td>
+                    <td class="px-5 py-3 text-xs text-slate-500 border-b border-slate-50">{{ $t->nama_petugas ?? $t->user->name }}</td>
                     <td class="px-5 py-3 border-b border-slate-50">
                         <div class="flex gap-2">
                             <a href="{{ route('transaksi.show', $t) }}" class="inline-flex items-center gap-1 bg-blue-50 hover:bg-blue-100 text-blue-600 px-3 py-1.5 rounded-lg text-xs font-medium border border-blue-200 transition-colors">
                                 <i class="ti ti-eye" aria-hidden="true"></i> Detail
                             </a>
                             @if(Auth::user()->role === 'bendahara')
-                                <form method="POST" action="{{ route('transaksi.destroy', $t) }}"
-                                      onsubmit="return confirm('Yakin hapus transaksi ini? Saldo siswa akan disesuaikan.')">
+                                <form method="POST" action="{{ route('transaksi.destroy', $t) }}" id="delete-form-{{ $t->id }}">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="inline-flex items-center gap-1 bg-rose-50 hover:bg-rose-100 text-rose-600 px-3 py-1.5 rounded-lg text-xs font-medium border border-rose-200 transition-colors">
+                                    <input type="hidden" name="alasan_hapus" id="alasan-{{ $t->id }}">
+                                    <button type="button" 
+                                            onclick="confirmDelete({{ $t->id }})"
+                                            class="inline-flex items-center gap-1 bg-rose-50 hover:bg-rose-100 text-rose-600 px-3 py-1.5 rounded-lg text-xs font-medium border border-rose-200 transition-colors">
                                         <i class="ti ti-trash" aria-hidden="true"></i> Hapus
                                     </button>
                                 </form>
@@ -182,5 +189,87 @@
         {{ $transaksi->links() }}
     </div>
     @endif
+</div>
+
+@push('scripts')
+<script>
+let currentDeleteId = null;
+
+function confirmDelete(id) {
+    currentDeleteId = id;
+    const modal = document.getElementById('modal-delete');
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden'; // Lock scroll
+}
+
+function closeModal() {
+    const modal = document.getElementById('modal-delete');
+    modal.classList.add('hidden');
+    document.body.style.overflow = 'auto'; // Unlock scroll
+    document.getElementById('alasan_input_modal').value = ''; // Reset
+    currentDeleteId = null;
+}
+
+function submitDelete() {
+    const alasan = document.getElementById('alasan_input_modal').value;
+    
+    if (alasan.trim() === '') {
+        alert('Mohon isi alasan penghapusan!');
+        return;
+    }
+    
+    // Set value ke hidden input di form yang sesuai
+    document.getElementById('alasan-' + currentDeleteId).value = alasan;
+    // Submit form
+    document.getElementById('delete-form-' + currentDeleteId).submit();
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('modal-delete');
+    if (event.target == modal) {
+        closeModal();
+    }
+}
+</script>
+@endpush
+
+{{-- Modal Konfirmasi Hapus --}}
+<div id="modal-delete" class="fixed inset-0 z-[100] hidden">
+    {{-- Overlay --}}
+    <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+    
+    {{-- Content --}}
+    <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+            <div class="flex flex-col items-center text-center">
+                <div class="w-16 h-16 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center mb-4">
+                    <i class="ti ti-alert-triangle text-3xl"></i>
+                </div>
+                
+                <h3 class="text-lg font-bold text-slate-800 mb-1">Konfirmasi Hapus</h3>
+                <p class="text-sm text-slate-500 mb-6">Yakin ingin menghapus transaksi ini? Saldo siswa akan disesuaikan kembali secara otomatis.</p>
+                
+                <div class="w-full text-left mb-6">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">Alasan Penghapusan <span class="text-rose-500">*</span></label>
+                    <textarea id="alasan_input_modal" rows="3" 
+                              class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 outline-none focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10 transition-all"
+                              placeholder="Contoh: Salah input nominal..."></textarea>
+                    <p class="text-[10px] text-slate-400 mt-2 italic">Alasan ini akan dicatat dalam riwayat audit untuk transparansi.</p>
+                </div>
+                
+                <div class="flex gap-3 w-full">
+                    <button type="button" onclick="closeModal()" 
+                            class="flex-1 px-5 py-2.5 rounded-xl border border-slate-200 text-slate-600 text-sm font-semibold hover:bg-slate-50 transition-colors">
+                        Batal
+                    </button>
+                    <button type="button" onclick="submitDelete()" 
+                            class="flex-1 px-5 py-2.5 rounded-xl bg-rose-600 text-white text-sm font-semibold hover:bg-rose-700 transition-colors shadow-lg shadow-rose-600/20">
+                        Ya, Hapus
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection

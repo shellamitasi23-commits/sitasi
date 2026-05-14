@@ -3,18 +3,23 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Transaksi extends Model
 {
+  use SoftDeletes;
   protected $table = 'transaksi';
   protected $fillable = [
     'siswa_id',
     'user_id',
+    'nama_petugas',
     'jenis',
     'jumlah',
     'saldo_sebelum',
     'saldo_sesudah',
     'keterangan',
+    'alasan_hapus',
+    'user_id_hapus',
   ];
 
   protected function casts(): array

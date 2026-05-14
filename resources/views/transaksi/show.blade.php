@@ -8,6 +8,12 @@
         <div class="text-xl font-semibold text-slate-800">Detail Transaksi</div>
         <div class="text-sm text-slate-500 mt-0.5">#{{ str_pad($transaksi->id, 6, '0', STR_PAD_LEFT) }}</div>
     </div>
+    <button onclick="window.print()" class="no-print flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m10 0v-4M7 13h10"></path>
+        </svg>
+        Cetak Bukti
+    </button>
 </div>
 
 <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
@@ -59,7 +65,7 @@
     </div>
     <div class="flex px-5 py-3 border-b border-slate-50 text-sm">
         <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider w-40 shrink-0 pt-0.5">Dicatat Oleh</div>
-        <div class="text-slate-800 font-medium">{{ $transaksi->user->name }}</div>
+        <div class="text-slate-800 font-medium">{{ $transaksi->nama_petugas ?? $transaksi->user->name }}</div>
     </div>
     <div class="flex px-5 py-3 text-sm">
         <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider w-40 shrink-0 pt-0.5">Keterangan</div>

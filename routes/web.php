@@ -60,8 +60,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/transaksi', [TransaksiController::class, 'index'])
         ->name('transaksi.index');
 
+    Route::get('/transaksi/trashed', [TransaksiController::class, 'trashed'])
+        ->name('transaksi.trashed');
+
     Route::get('/transaksi/{transaksi}', [TransaksiController::class, 'show'])
         ->name('transaksi.show')
+        ->whereNumber('transaksi');
+
+    Route::get('/transaksi/{transaksi}/cetak', [TransaksiController::class, 'cetak'])
+        ->name('transaksi.cetak')
         ->whereNumber('transaksi');
 
     //CRUD bendahara

@@ -35,6 +35,16 @@ class TransaksiController extends Controller
     return view('transaksi.index', compact('transaksi', 'siswaList'));
   }
 
+  public function trashed()
+  {
+    $transaksi = Transaksi::onlyTrashed()
+      ->with(['siswa.kelas', 'user'])
+      ->latest('deleted_at')
+      ->paginate(15);
+
+    return view('transaksi.trashed', compact('transaksi'));
+  }
+
   public function create()
   {
     $siswaList = Siswa::with('kelas')->orderBy('nama')->get();
@@ -45,10 +55,12 @@ class TransaksiController extends Controller
   {
     $request->validate([
       'siswa_id' => 'required|exists:siswa,id',
+      'nama_petugas' => 'required|string|max:100',
       'jenis' => 'required|in:tabung,tarik',
       'jumlah' => 'required|numeric|min:500',
       'keterangan' => 'nullable|string|max:255',
-    ], [
+    ], 
+    [
       'jumlah.min' => 'Jumlah transaksi minimal Rp 500.',
     ]);
 
@@ -71,6 +83,7 @@ class TransaksiController extends Controller
       Transaksi::create([
         'siswa_id' => $siswa->id,
         'user_id' => Auth::id(),
+        'nama_petugas' => $request->nama_petugas,
         'jenis' => $request->jenis,
         'jumlah' => $request->jumlah,
         'saldo_sebelum' => $saldo_sebelum,
@@ -92,6 +105,12 @@ class TransaksiController extends Controller
     return view('transaksi.show', compact('transaksi'));
   }
 
+  public function cetak(Transaksi $transaksi)
+  {
+    $transaksi->load(['siswa.kelas', 'user']);
+    return view('transaksi.cetak', compact('transaksi'));
+  }
+
   public function edit(Transaksi $transaksi)
   {
     // Transaksi keuangan tidak boleh diedit — hanya bisa dihapus
@@ -106,11 +125,15 @@ class TransaksiController extends Controller
       ->with('error', 'Transaksi tidak dapat diedit.');
   }
 
-  public function destroy(Transaksi $transaksi)
+  public function destroy(Request $request, Transaksi $transaksi)
   {
+    $request->validate([
+      'alasan_hapus' => 'required|string|max:255',
+    ]);
+
     $siswa = Siswa::lockForUpdate()->findOrFail($transaksi->siswa_id);
 
-    DB::transaction(function () use ($transaksi, $siswa) {
+    DB::transaction(function () use ($request, $transaksi, $siswa) {
       // Balik efek transaksi ke saldo siswa
       if ($transaksi->jenis === 'tabung') {
         $siswa->update(['saldo' => $siswa->saldo - $transaksi->jumlah]);
@@ -118,10 +141,16 @@ class TransaksiController extends Controller
         $siswa->update(['saldo' => $siswa->saldo + $transaksi->jumlah]);
       }
 
-      $transaksi->delete();
+      // Simpan alasan dan siapa yang menghapus
+      $transaksi->update([
+        'alasan_hapus' => $request->alasan_hapus,
+        'user_id_hapus' => Auth::id(),
+      ]);
+
+      $transaksi->delete(); // Soft delete
     });
 
     return redirect()->route('transaksi.index')
-      ->with('success', 'Transaksi berhasil dihapus dan saldo telah disesuaikan.');
+      ->with('success', 'Transaksi berhasil dihapus (soft-delete) dan saldo telah disesuaikan.');
   }
 }
